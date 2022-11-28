@@ -86,7 +86,7 @@ contract MultiSigWallet {
             data:_data,
             executed:false
         }));
-        emit Submit(transaction.length - 1);
+        emit Submit(transactions.length - 1);
     }
 
     /**
@@ -115,11 +115,10 @@ contract MultiSigWallet {
      * @param _txId : transcation ID
      */
     function execute(uint _txId) external txExists(_txId) notExecuted(_txId) {
-        Transaction storage transaction = transactions[_txId];
         require(_getApprovalCount(_txId) >= required, "not enough approvals");
-        // Transaction storage transaction = transactions[_txId];
-        transaction.executed = true;
-        (bool success, ) = transaction.to.call{value: transaction.value}(transaction.data);
+        transaction storage transaction1 = transactions[_txId];
+        transaction1.executed = true;
+        (bool success, ) = transaction1.to.call{value: transaction1.value}(transaction1.data);
         require(success, "tx failed");
         emit Execute(_txId);
     }
@@ -132,6 +131,14 @@ contract MultiSigWallet {
         require(approved[_txId][msg.sender], "tx not approved");
         approved[_txId][msg.sender] = false;
         emit Revoke(msg.sender, _txId);
+    }
+
+    function getOwners() public view returns (address[] memory) {
+        return owners;
+    }
+
+    function getTransactionCount() public view returns (uint) {
+        return transactions.length;
     }
 
     receive() external payable {
