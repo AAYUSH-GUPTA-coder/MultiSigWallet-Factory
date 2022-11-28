@@ -1,0 +1,11 @@
+{
+  "name": "MultiSigWallet",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/AAYUSH-GUPTA-coder/MultiSigWallet.git",
+  "author": "AAYUSH-GUPTA-coder <60979345+AAYUSH-GUPTA-coder@users.noreply.github.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "hardhat": "^2.12.2"
+  }
+}
