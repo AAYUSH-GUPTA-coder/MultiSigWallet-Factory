@@ -17,6 +17,9 @@ contract MultiFactory{
     // searching the struct data of MultiSigWallet and MultiSigWallet factory using owner address
     mapping(address => multiFactoryStruct) public allMultiSigWallet;
 
+    // owner address, onwer address will be used check which address own/create a new multisg wallet
+    mapping(address => address) public searchByAddress;
+
     // number of MultiSigWallet created
     uint256 public numOfMultiSigWallet;
 
@@ -47,6 +50,9 @@ contract MultiFactory{
                 address(this)
             )
         );
+
+        // search the profile by using owner address
+        searchByAddress[msg.sender] = address(multiSigWallet);
     }
 
     // function to withdraw the fund from contract factory
