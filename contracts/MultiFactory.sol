@@ -30,7 +30,7 @@ contract MultiFactory{
     /**
      * @dev function to create the contract MultiSigWallet
      */
-    function createMultiSigWallet(address[] _onwers, uint _required) public {
+    function createMultiSigWallet(address[] memory _onwers, uint _required) public {
         // Create a new Wallet contract
         MultiSigWallet multiSigWallet =  new MultiSigWallet(
             _onwers,
@@ -51,10 +51,10 @@ contract MultiFactory{
 
     // function to withdraw the fund from contract factory
     function withdraw(uint256 amount) external payable {
-        require(msg.sender == multiSigFactoryOwner, "ONLY_ONWER_CAN_CALL_FUNCTION")
+        require(msg.sender == multiSigFactoryOwner, "ONLY_ONWER_CAN_CALL_FUNCTION");
         // sending money to contract owner
         (bool success, ) = multiSigFactoryOwner.call{value: amount}("");
-        require(success, "TRANSFER_FAILED")
+        require(success, "TRANSFER_FAILED");
     }
 
     // get the balance of the contract
@@ -73,9 +73,7 @@ contract MultiFactory{
     }
 
     // receive function is used to receive Ether when msg.data is empty
-    receive() external payable {
-        emit Deposit(msg.sender, msg.value);
-    }
+    receive() external payable {}
 
     // Fallback function is used to receive Ether when msg.data is NOT empty
     fallback() external payable {}
