@@ -98,24 +98,11 @@ contract MultiSigWallet {
     }
 
     /**
-     * @dev function to get count how many voted for approval
-     * @param _txId : transcation ID
-     */
-
-    function _getApprovalCount(uint _txId) private view returns(uint count){
-        for(uint i; i< owners.length; i++){
-            if(approved[_txId][owners[i]]){
-                count += 1;
-            }
-        }
-    }
-
-    /**
      * @dev function to execute the transcation
      * @param _txId : transcation ID
      */
     function execute(uint _txId) external txExists(_txId) notExecuted(_txId) {
-        require(_getApprovalCount(_txId) >= required, "not enough approvals");
+        require(getApprovalCount(_txId) >= required, "not enough approvals");
         transaction storage transaction1 = transactions[_txId];
         transaction1.executed = true;
         (bool success, ) = transaction1.to.call{value: transaction1.value}(transaction1.data);
@@ -141,7 +128,32 @@ contract MultiSigWallet {
         return transactions.length;
     }
 
+    /**
+     * @dev function to get count how many voted for approval
+     * @param _txId : transcation ID
+     * it is also used in execute function
+     */
+
+    function getApprovalCount(uint _txId) public view returns(uint count){
+        for(uint i; i< owners.length; i++){
+            if(approved[_txId][owners[i]]){
+                count += 1;
+            }
+        }
+    }
+
+    function getWalletBalance() public view returns(uint){
+        return address(this).balance;
+    }
+
+    // receive function is used to receive Ether when msg.data is empty
     receive() external payable {
         emit Deposit(msg.sender, msg.value);
     }
+
+    // Fallback function is used to receive Ether when msg.data is NOT empty
+    fallback() external payable {}
 }
+
+
+// ["0x5B38Da6a701c568545dCfcB03FcB875f56beddC4","0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2","0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db"]
