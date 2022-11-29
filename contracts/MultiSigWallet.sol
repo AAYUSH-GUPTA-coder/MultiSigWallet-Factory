@@ -44,7 +44,7 @@ contract MultiSigWallet {
     }
 
     modifier notApproved(uint _txId){
-        require(!approved[_txId][msg.sender], "tx already approved");
+        require(!approved[_txId][msg.sender], "tx already approved by you");
         _;
     }
 
