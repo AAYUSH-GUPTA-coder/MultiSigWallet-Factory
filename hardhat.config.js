@@ -16,7 +16,6 @@ task(
     const web3Goerli = createAlchemyWeb3(API_URL_GOERLI);
     const web3Mumbai = createAlchemyWeb3(API_URL_MUMBAI);
     const web3FEVM = createAlchemyWeb3(API_URL_FEVM);
-    const web3Opt = createAlchemyWeb3(API_URL_OPTIMISM);
 
     const networkIDArr = [
       "Ethereum Goerli:",
@@ -35,7 +34,7 @@ task(
       resultArr.push([
         networkIDArr[i],
         nonce,
-        parseFloat(providerArr[i].utils.fromWei(balance, "ether")).toFixed(1) +
+        parseFloat(providerArr[i].utils.fromWei(balance, "ether")).toFixed(0.1) +
           "ETH",
       ]);
     }
@@ -57,7 +56,7 @@ module.exports = {
       accounts: [PRIVATE_KEY],
     },
     wallaby: {
-      url: API_URL_FEVM,
+      url: "https://wallaby.node.glif.io/rpc/v0",
       accounts: [PRIVATE_KEY],
     },
   },
