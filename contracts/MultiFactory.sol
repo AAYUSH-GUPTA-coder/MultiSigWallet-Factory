@@ -39,9 +39,44 @@ contract MultiFactory{
         // Increment the number of MultiSigWallet
         numOfMultiSigWallet++;
 
-        // Add the new trust contract to the mapping
-        
+        // Add the new MultiSigWallet to the mapping
+        allMultiSigWallet[msg.sender] = (
+            multiFactoryStruct(
+                _onwers,
+                _required,
+                address(this)
+            )
+        );
     }
 
+    // function to withdraw the fund from contract factory
+    function withdraw(uint256 amount) external payable {
+        require(msg.sender == multiSigFactoryOwner, "ONLY_ONWER_CAN_CALL_FUNCTION")
+        // sending money to contract owner
+        (bool success, ) = multiSigFactoryOwner.call{value: amount}("");
+        require(success, "TRANSFER_FAILED")
+    }
 
+    // get the balance of the contract
+    function getContractBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+
+    // get the address of this contract
+    function getAddressOfContract() public view returns (address) {
+        return address(this);
+    }
+
+    // get the address of trustFactory contract owner
+    function getAddressOfMultiSigFactoryOwner() public view returns (address) {
+        return multiSigFactoryOwner;
+    }
+
+    // receive function is used to receive Ether when msg.data is empty
+    receive() external payable {
+        emit Deposit(msg.sender, msg.value);
+    }
+
+    // Fallback function is used to receive Ether when msg.data is NOT empty
+    fallback() external payable {}
 }
