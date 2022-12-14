@@ -1,13 +1,5 @@
-# Sample Hardhat Project
+# MultiSigWallet-Factory
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+MultiFactory is a factory smart contract that allows user to create multisig wallet. 
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+## MultiFactory Contract Address: [0xA40F592762AfBBdEdcffe790EBfDE2da3cB749B7](https://mumbai.polygonscan.com/address/0xA40F592762AfBBdEdcffe790EBfDE2da3cB749B7)
