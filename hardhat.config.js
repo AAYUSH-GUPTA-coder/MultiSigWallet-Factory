@@ -3,9 +3,15 @@ require("@nomiclabs/hardhat-ethers");
 require("dotenv").config();
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const { task } = require("hardhat/config");
+require("@nomiclabs/hardhat-etherscan");
 
-const { API_URL_GOERLI, API_URL_MUMBAI, API_URL_FEVM, PRIVATE_KEY } =
-  process.env;
+const {
+  API_URL_GOERLI,
+  API_URL_MUMBAI,
+  API_URL_FEVM,
+  PRIVATE_KEY,
+  POLYGONSCAN_API_KEY,
+} = process.env;
 
 task(
   "account",
@@ -58,6 +64,11 @@ module.exports = {
     wallaby: {
       url: "https://wallaby.node.glif.io/rpc/v0",
       accounts: [PRIVATE_KEY],
+    },
+  },
+  etherscan: {
+    apiKey: {
+      polygonMumbai: POLYGONSCAN_API_KEY,
     },
   },
 };
