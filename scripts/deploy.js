@@ -20,6 +20,21 @@ async function main() {
     "TrustFactory Contract Address:",
     deployedMultiFactoryContract.address
   );
+
+  console.log("Sleeping.....");
+  // Wait for etherscan to notice that the contract has been deployed
+  await sleep(100000); // 100 seconds
+
+  // Verify the contract after deploying
+  await hre.run("verify:verify", {
+    address: deployedMultiFactoryContract.address,
+    constructorArguments: ["0x4E476F7FB84c785557cDECdbf8CADEbE8EA57C37"],
+    contract: "contracts/MultiFactory.sol:MultiFactory",
+  });
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // Call the main function and catch if there is any error
