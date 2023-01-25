@@ -18,7 +18,7 @@ contract MultiFactory{
     mapping(address => multiFactoryStruct) public allMultiSigWallet;
 
     // owner address, onwer address will be used check which address own/create a new multisg wallet
-    mapping(address => address) public searchByAddress;
+    mapping(address => address[]) public searchByAddress;
 
     // number of MultiSigWallet created
     uint256 public numOfMultiSigWallet;
@@ -52,7 +52,9 @@ contract MultiFactory{
         );
 
         // search the profile by using owner address
-        searchByAddress[msg.sender] = address(multiSigWallet);
+        // Solidity mappings with array type keys are not a good idea to use in practice, 
+        // as the key data is stored in the contract storage and it will consume a lot of storage and gas cost.
+        searchByAddress[msg.sender].push(address(multiSigWallet));
     }
 
     // function to withdraw the fund from contract factory
@@ -76,6 +78,11 @@ contract MultiFactory{
     // get the address of trustFactory contract owner
     function getAddressOfMultiSigFactoryOwner() public view returns (address) {
         return multiSigFactoryOwner;
+    }
+
+    // get all the wallet addresses deployed by creator address
+    function getSearchByAddress(address _creatorAddress) public view returns(address[] memory){
+        return searchByAddress[_creatorAddress];
     }
 
     // receive function is used to receive Ether when msg.data is empty
